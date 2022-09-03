@@ -11,7 +11,7 @@ const displayCategory=categories=>{
     categories.forEach(category => {
         const id = category.category_id;
         const categoryDiv = document.createElement('div');
-        categoryDiv.classList.add('row','d-flex');
+        categoryDiv.classList.add('row');
         categoryDiv.innerHTML=`
         <a style="cursor: grab" onclick="loadPerCategory(${id})" class="mx-3 text-decoration-none text-secondary">${category.category_name}</a>
         `;
@@ -26,28 +26,39 @@ const loadPerCategory= (category_id) =>{
 }
 const displayPerCategory=category1=>{
     const newsContainer = document.getElementById('news-container');
+    const noNewsFound = document.getElementById('no-found-message');
     newsContainer.innerHTML='';
-    category1.forEach(news => {
-        const newsId = news._id;
-        const newsDiv = document.createElement('div');
-        newsDiv.classList.add('card');
-        newsDiv.innerHTML=`
-        <div class="card h-100 shadow">
-            <img src="${news.thumbnail_url}" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">${news.title}</h5>
-                <p class="card-text">${news.details.slice(0, 150)+'...'}</p>
-                <div class="d-flex">
-                <img style="height:50px; width:50px;" src="${news.author.img}" class="img-fluid me-2">
-                <p class="fw-bold me-3 text-danger">${news.author.name ? news.author.name:'No Data Found'}</p>
-                <p class="fw-bold me-3">${news.total_view ? news.total_view: 'No Data Found'}</p>
-                <button onclick="loadNewsDetails('${newsId}')" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#newsDetailModal">Details</button>
-                </div>
-             </div>
-        </div>
-        `;
-        newsContainer.appendChild(newsDiv);
-    });   
+    noNewsFound.innerHTML='';
+    if(category1.length === 0){
+        const noData =document.createElement('h1');
+        noData.classList.add('text-center')
+        noData.innerText = 'No Data Has Been Found Here';
+        noNewsFound.appendChild(noData);
+    }
+    else{
+        category1.forEach(news => {
+            const newsId = news._id;
+            const newsDiv = document.createElement('div');
+            newsDiv.classList.add('card');
+            newsDiv.innerHTML=`
+            <div class="card h-100 shadow">
+                <img src="${news.thumbnail_url}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">${news.title}</h5>
+                    <p class="card-text">${news.details.slice(0, 150)+'...'}</p>
+                    <div class="d-flex">
+                    <img style="height:50px; width:50px;" src="${news.author.img}" class="img-fluid me-2">
+                    <p class="fw-bold me-3 text-danger">${news.author.name ? news.author.name:'No Data Found'}</p>
+                    <p class="fw-bold me-3">${news.total_view ? news.total_view: 'No Data Found'}</p>
+                    <button onclick="loadNewsDetails('${newsId}')" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#newsDetailModal">Details</button>
+                    </div>
+                 </div>
+            </div>
+            `;
+            newsContainer.appendChild(newsDiv);
+        }); 
+    }
+      
 }
 
 const loadNewsDetails =(news_id)=>{
