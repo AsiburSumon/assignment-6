@@ -11,7 +11,7 @@ const displayCategory=categories=>{
     categories.forEach(category => {
         const id = category.category_id;
         const categoryDiv = document.createElement('div');
-        categoryDiv.classList.add('row');
+        categoryDiv.classList.add('d-sm-block', 'd-lg-inline');
         categoryDiv.innerHTML=`
         <a style="cursor: grab" onclick="loadPerCategory(${id})" class="mx-3 text-decoration-none text-secondary">${category.category_name}</a>
         `;
@@ -31,7 +31,7 @@ const displayPerCategory=category1=>{
     noNewsFound.innerHTML='';
     if(category1.length === 0){
         const noData =document.createElement('h1');
-        noData.classList.add('text-center')
+        noData.classList.add('text-center','text-warning','mt-5','pt-5')
         noData.innerText = 'No Data Has Been Found Here';
         noNewsFound.appendChild(noData);
     }
@@ -39,7 +39,6 @@ const displayPerCategory=category1=>{
         category1.forEach(news => {
             const newsId = news._id;
             const newsDiv = document.createElement('div');
-            newsDiv.classList.add('card');
             newsDiv.innerHTML=`
             <div class="card h-100 shadow">
                 <img src="${news.thumbnail_url}" class="card-img-top" alt="...">
@@ -49,7 +48,7 @@ const displayPerCategory=category1=>{
                     <div class="d-flex">
                     <img style="height:50px; width:50px;" src="${news.author.img}" class="img-fluid me-2">
                     <p class="fw-bold me-3 text-danger">${news.author.name ? news.author.name:'No Data Found'}</p>
-                    <p class="fw-bold me-3">${news.total_view ? news.total_view: 'No Data Found'}</p>
+                    <p class="fw-semibold me-3">${news.total_view ? news.total_view: 'No Data Found'}</p>
                     <button onclick="loadNewsDetails('${newsId}')" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#newsDetailModal">Details</button>
                     </div>
                  </div>
@@ -58,6 +57,8 @@ const displayPerCategory=category1=>{
             newsContainer.appendChild(newsDiv);
         }); 
     }
+    document.getElementById('item-number').innerText = category1.length;
+    
       
 }
 
@@ -76,6 +77,7 @@ const displayNewsDetails=data=>{
         <p><span class="fs-5 fw-bold">Details:</span> ${data.details}</p>
         <p><span class="fs-5 fw-bold">Rating Badge:</span> ${data.rating.badge}</p>
         <p><span class="fs-5 fw-bold">Rating:</span> ${data.rating.number}</p>
+        <p><span class="fs-5 fw-bold">Total Views:</span> ${data.total_view}</p>
         <p><span class="fs-5 fw-bold">Is Todays Pick:</span> ${data.others_info.is_todays_pick}</p>
         <p><span class="fs-5 fw-bold">Is Trending:</span> ${data.others_info.is_trending}</p>
     `;
