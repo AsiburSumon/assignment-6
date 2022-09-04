@@ -102,6 +102,7 @@ const displayNewsDetails=data=>{
         <p><span class="fs-5 fw-bold">Is Trending:</span> ${data.others_info.is_trending}</p>
     `;
 }
+
 const toggleSpinner = isLoading =>{
     const loaderSection = document.getElementById('spinnerLoader');
     if(isLoading){
@@ -109,8 +110,7 @@ const toggleSpinner = isLoading =>{
     }
     else{
         loaderSection.classList.add('d-none');
-    }
-    
+    }  
 }
 
 loadPerCategory(07);
