@@ -1,8 +1,14 @@
 const loadCategory =()=>{
     const url = `https://openapi.programming-hero.com/api/news/categories`
-    fetch(url)
-    .then(res=> res.json())
-    .then(data=>displayCategory(data.data.news_category))
+    try{
+        fetch(url)
+        .then(res=> res.json())
+        .then(data=>displayCategory(data.data.news_category))
+    }
+    catch (error) {
+        console.log(error);
+    }
+    
 }
 
 const displayCategory=categories=>{
@@ -23,12 +29,14 @@ const loadPerCategory= (category_id) =>{
     fetch(url)
     .then(res => res.json())
     .then(data=> displayPerCategory(data.data))
+    toggleSpinner(true);
 }
 const displayPerCategory=category1=>{
     const newsContainer = document.getElementById('news-container');
     const noNewsFound = document.getElementById('no-found-message');
     newsContainer.innerHTML='';
     noNewsFound.innerHTML='';
+    toggleSpinner(false);
     if(category1.length === 0){
         const noData =document.createElement('h1');
         noData.classList.add('text-center','text-warning','mt-5','pt-5')
@@ -58,9 +66,8 @@ const displayPerCategory=category1=>{
         }); 
     }
     document.getElementById('item-number').innerText = category1.length;
-    
-      
 }
+
 
 const loadNewsDetails =(news_id)=>{
     const url = `https://openapi.programming-hero.com/api/news/${news_id}`
@@ -82,8 +89,16 @@ const displayNewsDetails=data=>{
         <p><span class="fs-5 fw-bold">Is Trending:</span> ${data.others_info.is_trending}</p>
     `;
 }
+const toggleSpinner = isLoading =>{
+    const loaderSection = document.getElementById('spinnerLoader');
+    if(isLoading){
+        loaderSection.classList.remove('d-none');
+    }
+    else{
+        loaderSection.classList.add('d-none');
+    }
+    
+}
 
-
-// loadNewsDetails();
-// displayPerCategory();
+loadPerCategory(07);
 loadCategory();
