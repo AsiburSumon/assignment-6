@@ -24,6 +24,7 @@ const displayCategory=categories=>{
         allCategroy.appendChild(categoryDiv);
     });
 }
+
 const loadPerCategory= (category_id) =>{
     const url = `https://openapi.programming-hero.com/api/news/category/0${category_id}`
     fetch(url)
@@ -31,12 +32,24 @@ const loadPerCategory= (category_id) =>{
     .then(data=> displayPerCategory(data.data))
     toggleSpinner(true);
 }
+function sortByViews(a, b){
+    if(a.total_view < b.total_view){
+        return 1;
+    }
+    if (a.total_view > b.total_view) {
+        return -1;
+    } else {
+        return 0;
+    }
+}
+
 const displayPerCategory=category1=>{
     const newsContainer = document.getElementById('news-container');
     const noNewsFound = document.getElementById('no-found-message');
     newsContainer.innerHTML='';
     noNewsFound.innerHTML='';
     toggleSpinner(false);
+    category1.sort(sortByViews);
     if(category1.length === 0){
         const noData =document.createElement('h1');
         noData.classList.add('text-center','text-warning','mt-5','pt-5')
